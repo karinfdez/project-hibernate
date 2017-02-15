@@ -62,7 +62,60 @@ public class Application {
         return contacts;
     }
 
-    private static void save(Contact contact){
+    private static Contact findByContactId(int id){
+
+        // Open a session
+        Session session = sessionFactory.openSession();
+
+        //Retrieve persistent object or null if not found
+        Contact contact=session.get(Contact.class,id);
+
+        // Close the session
+        session.close();
+
+        //Return object
+        return contact;
+    }
+
+    private static void update(Contact contact){
+
+        //Open session
+        Session session=sessionFactory.openSession();
+
+        //Begin a transaction
+        session.beginTransaction();
+
+        //Use the session to update the contact
+        session.update(contact);
+
+        //Commit the transaction
+        session.getTransaction().commit();
+
+        //Close session
+        session.close();
+    }
+
+    private static void delete(Contact contact){
+
+        //Open session
+        Session session=sessionFactory.openSession();
+
+        //Begin a transaction
+        session.beginTransaction();
+
+        //Use the session to update the contact
+        session.delete(contact);
+
+        //Commit the transaction
+        session.getTransaction().commit();
+
+        //Close session
+        session.close();
+    }
+
+
+
+    private static int save(Contact contact){
 
         //Open a session
         Session session=sessionFactory.openSession();
@@ -71,32 +124,15 @@ public class Application {
         session.beginTransaction();
 
         //Use the session to save the contact
-        session.save(contact);
+        int id= (int)session.save(contact);
 
         //Commit the transaction
         session.getTransaction().commit();
 
         //Close the session
         session.close();
+
+        return id;
     }
 }
 
-
-
-    @SupressWarnings("unchecked")
-    public List<Language> findAll() {
-        // Open session
-        Session session = sessionFactory.openSession();
-
-        // TODO: Create Criteria
-        Criteria criteria = session.createCriteria(Contact.class);
-
-        // TODO: Get a list of all persisted Language entities
-        List<Language> languages = criteria.list();
-
-        // Close the session
-        session.close();
-
-        // Return the list
-        return languages;
-    }
