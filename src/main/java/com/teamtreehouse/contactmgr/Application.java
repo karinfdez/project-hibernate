@@ -33,9 +33,7 @@ public class Application {
                 save(contact);
 
                 //Display a list of contacts
-                for(Contact c : fetchAllContacts()){
-                    System.out.println(c);
-                }
+                fetchAllContacts().stream().forEach(System.out::println);
 
     }
 
@@ -83,3 +81,22 @@ public class Application {
     }
 }
 
+
+
+    @SupressWarnings("unchecked")
+    public List<Language> findAll() {
+        // Open session
+        Session session = sessionFactory.openSession();
+
+        // TODO: Create Criteria
+        Criteria criteria = session.createCriteria(Contact.class);
+
+        // TODO: Get a list of all persisted Language entities
+        List<Language> languages = criteria.list();
+
+        // Close the session
+        session.close();
+
+        // Return the list
+        return languages;
+    }
